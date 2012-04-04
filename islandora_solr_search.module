@@ -447,3 +447,16 @@ function islandora_solr_search_init() {
     $islandora_solr_search_init = TRUE;
   }
 }
+
+/**
+ * Implementation of hook_perm().
+ */
+function islandora_solr_search_perm() {
+  return array('View inactive objects in search results');
+}
+
+function islandora_solr_search_islandora_solr_search_query_processor(IslandoraSolrQueryProcessor $processor) {
+  if (!user_access('View inactive objects in search results')) {
+    $processor->solrQuery .= " AND fgs.state=Active";
+  }
+}
